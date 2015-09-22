@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '0.10'
+before_install:
+  - npm install npm -g
+deploy:
+  - provider: npm
+    skip_cleanup: true
+    clean_up: false
+    email: serveradmin@octoblu.com
+    api_key:
+      secure: "R5MTwVpcTXMW/AGFY8JnEej3dMO3AuU6pLea5X2BuhlFdj/JWQb+x/lVN3kW1k5iPbOoh99F3UdSJTJTt40OcdPwT4A0VClX2hrs4dEErelGpI3t44ZUwNn1HbvGQWTh3/ZiI4Xe5rqVfCKDKBcwFkmZ4F+9hoXqQbBcFLCCsbg="
+    on:
+      tags: true
+      all_branches: true

@@ -1,9 +1,9 @@
 'use strict';
-var util = require('util');
-var nodeOculus = require('node-oculus');
+var _            = require('lodash');
+var util         = require('util');
+var nodeOculus   = require('node-oculus');
 var EventEmitter = require('events').EventEmitter;
-var debug = require('debug')('meshblu-oculus')
-var oculus;
+var debug        = require('debug')('meshblu-oculus');
 
 var MESSAGE_SCHEMA = {
   type: 'object',
@@ -36,35 +36,35 @@ function Plugin(){
 util.inherits(Plugin, EventEmitter);
 
 Plugin.prototype.onMessage = function(message){
+  var self = this;
+  var oculus = self.getOculus();
   var payload = oculus.getDeviceInfo();
-  this.emit('message', {devices: ['*'], topic: 'echo', payload: payload});
+  self.emit('message', {devices: ['*'], topic: 'echo', payload: payload});
+};
+
+Plugin.prototype.getOculus = function(){
+  var self = this;
+  if(!self.oculus){
+    self.oculus = nodeOculus.createOculus();
+  }
+  return self.oculus;
 };
 
 Plugin.prototype.onConfig = function(device){
-  this.setOptions(device.options||{});
-var self = this;
-oculus = nodeOculus.createOculus();
+  var self = this;
+  self.setOptions(device.options || {});
+  var oculus = self.getOculus();
 
-if(oculus.discoverSensor()) {
-setInterval(function(){
- 
- 
-  var quat = new Float32Array(4);
-   // console.log(oculus.getOrientationQuat(quat));
-   
-    self.emit('message',{
-      devices: ['*'],
-      payload: oculus.getOrientationQuat(quat)
-    });
- 
-
- 
-}, device.options.interval);
-}
+  if(oculus.discoverSensor()) {
+    setInterval(function(){
+      var quat = new Float32Array(4);
+      self.emit('message',{ devices: ['*'], payload: oculus.getOrientationQuat(quat)});
+    }, self.options.interval);
+  }
 };
 
 Plugin.prototype.setOptions = function(options){
-  this.options = options;
+  this.options = _.defaults(options, {interval: 200});
 };
 
 module.exports = {

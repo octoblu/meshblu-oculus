@@ -1,16 +1,34 @@
 {
   "name": "meshblu-oculus",
   "repository": "octoblu/meshblu-oculus",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "main": "connector.js",
   "scripts": {
+    "preinstall": "node -e \"try{require('./skip-install.js')}catch(e){}\"",
     "start": "node command.js",
     "test": "exit 0"
   },
   "dependencies": {
-    "meshblu": "^1.9.0",
-    "debug": "^2.1.0",
-    "node-oculus" : "*"
+    "debug": "^2.2.0",
+    "lodash": "^3.10.1",
+    "meshblu": "^1.30.1",
+    "meshblu-config": "^3.1.1",
+    "node-oculus": "^1.0.1"
   },
+  "bundledDependencies": [
+    "request",
+    "tar",
+    "fstream"
+  ],
+  "platformDependencies": {
+    "darwin": [],
+    "win32": [],
+    "win64": [],
+    "linux": [],
+    "android": [],
+    "ios": []
+  },
+  "license": "MIT",
   "keywords": [
     "meshblu-connector",
     "gateblu"
